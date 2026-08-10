@@ -169,6 +169,27 @@ export default function ResumePage() {
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between items-start mb-1">
+                    <h3 className="font-semibold">AI-First Portfolio Website</h3>
+                    <span className="text-gray-600 text-sm">2025</span>
+                  </div>
+                  <ul className="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                    <li>
+                      Architected and shipped a production Next.js portfolio using an AI-first workflow with v0,
+                      generating, iterating, and refining full-stack components through natural-language prompting
+                    </li>
+                    <li>
+                      Leveraged prompt engineering and rapid AI-assisted iteration to design responsive layouts,
+                      Framer Motion animations, and reusable React/TypeScript components while maintaining full code
+                      ownership and review
+                    </li>
+                    <li>
+                      Integrated and validated AI-generated code against accessibility, performance, and design-system
+                      best practices, demonstrating effective human-in-the-loop collaboration with AI tooling
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex justify-between items-start mb-1">
                     <h3 className="font-semibold">WakeUpWars</h3>
                     <span className="text-gray-600 text-sm">January 2025 – December 2025</span>
                   </div>
