@@ -1,33 +1,48 @@
-# portfolio
+# gloriashin.me
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Personal portfolio. Static site — one HTML file and an asset folder. No build
+step, no dependencies, no framework.
 
-## Built with v0
-
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
-
-[Continue working on v0 →](https://v0.app/chat/projects/prj_PAyjiZHhDXP3zTceicJf78LO5BCR)
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+index.html      the whole page: markup, styles, scripts
+img/            photos and videos
+img/gfx/        teapot mesh, texture/normal/displacement maps, cube map faces
+vercel.json     static config, long cache on /img
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `index.html` in a browser to work on it locally. That's the whole dev
+loop.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What's on the page
 
-## Learn More
+Hero with a WebGL shader background, work history, projects, an interactive
+teapot viewer, art and making, about, contact.
 
-To learn more, take a look at the following resources:
+The **teapot viewer** runs the geometry and texture maps from my CS5610
+assignments live in the browser via three.js, with four shading modes drawn
+from the actual projects: Blinn-Phong (Project 3), textured (Project 4),
+displaced on a tessellated quad (Project 8), and environment mapped (Project
+6). Three.js loads lazily and only when that section scrolls into view.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+## Palettes
+
+Five palettes ship in the CSS. Pastel is the default. To switch, set the
+attribute on `<html>` in `index.html`:
+
+```html
+<html lang="en" data-palette="riso">
+```
+
+Valid: `riso`, `sage`, `butter`, `plum`, `violet`. The page tokens and the
+hero shader both follow it.
+
+## Deploying
+
+Pushes to `main` deploy to gloriashin.me through Vercel. See
+[README-deploy.md](README-deploy.md) for setup notes, including the framework
+preset that needs to be set to "Other".
+
+## History
+
+This replaced a Next.js app generated with v0. That version is still in git
+history before the `redesign-2026` branch.
