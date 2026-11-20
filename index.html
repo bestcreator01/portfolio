@@ -1,0 +1,1379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gloria Shin Portfolio</title>
+<meta name="description" content="Gloria Shin is a full-stack engineer in Los Angeles building live event platforms, mobile games and community apps in Go, TypeScript and React.">
+<meta property="og:title" content="Gloria Shin">
+<meta property="og:description" content="Full-stack engineer. Live event platforms, mobile games, community apps, and real-time graphics.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.gloriashin.me/">
+<link rel="canonical" href="https://www.gloriashin.me/">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@125,600;125,700;125,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* baseline reset (the artifact host used to supply this) */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: single dark HUD page. Full-bleed shader hero, then banded sections on a
+   centered 1120px rail; chamfered "panel" chrome for anything that reads as a game object. */
+:root{
+  /* --violet = primary ink, --magenta = accent ink, --gold = data highlight.
+     Names stay fixed across palettes so only the values swap.
+     Default: Pastel — blush and butter washes on warm paper, confident inks on top. */
+  --bg:#FDF7F2;   --bg-rgb:253,247,242;
+  --bg-2:#FCEDE8;
+  --bg-3:#FDF4DC;
+  --surface:#FFFFFF;
+  --surface-2:#FDF5F1;
+  --line:#F2DED4;
+  --line-hot:#DCBCAE;
+  --violet:#E0557B;  --violet-rgb:224,85,123;
+  --magenta:#F5B63D; --magenta-rgb:245,182,61; --magenta-hi:#FFC95F;
+  --gold:#7A6BC9;
+  --ink-accent:#B06212;
+  --text:#2E2430;
+  --soft:#4E4350;
+  --muted:#7A6D7E;
+  --dim:#9A8C9C;
+  --on-primary:#FFFFFF;
+  --on-accent:#3C2A0E;
+  --scan:.03; --glow:.2; --glow-btn:.3;
+  --panel-shadow:drop-shadow(0 3px 14px rgba(93,54,70,.08));
+
+  --display:"Anybody","Arial Narrow",Impact,sans-serif;
+  --body:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --rail:1120px;
+  --chamfer:18px;
+  color-scheme:light;
+}
+
+/* Riso — bone paper, two muted print inks */
+:root[data-palette="riso"]{
+  --bg:#F4F2ED; --bg-rgb:244,242,237;
+  --bg-2:#EBE8E1; --bg-3:#EFEADF; --surface:#FFFFFF; --surface-2:#F7F5F1;
+  --line:#DDD8CE; --line-hot:#BDB5A6;
+  --violet:#3E5C9A; --violet-rgb:62,92,154;
+  --magenta:#D8603F; --magenta-rgb:216,96,63; --magenta-hi:#E47558;
+  --gold:#B98726; --ink-accent:#BE4E2F;
+  --text:#1F2328; --soft:#454B54; --muted:#6E7682; --dim:#949CA8;
+  --on-primary:#FFFFFF; --on-accent:#FFFFFF;
+  --panel-shadow:drop-shadow(0 2px 10px rgba(31,35,40,.055));
+}
+
+/* Sage — cool paper, deep moss, dusty rose */
+:root[data-palette="sage"]{
+  --bg:#F0F1EC; --bg-rgb:240,241,236;
+  --bg-2:#E6E8E1; --bg-3:#EBEDE4; --surface:#FFFFFF; --surface-2:#F5F6F2;
+  --line:#D7DAD0; --line-hot:#B2B8A8;
+  --violet:#4A6150; --violet-rgb:74,97,80;
+  --magenta:#C07A7E; --magenta-rgb:192,122,126; --magenta-hi:#CE8E92;
+  --gold:#A9821F; --ink-accent:#A4595D;
+  --text:#1E231F; --soft:#434A44; --muted:#6C7470; --dim:#969E99;
+  --on-primary:#FFFFFF; --on-accent:#FFFFFF;
+}
+
+/* Slate & Butter — grey paper, ink-blue, soft butter yellow */
+:root[data-palette="butter"]{
+  --bg:#F1F2F4; --bg-rgb:241,242,244;
+  --bg-2:#E6E8EC; --bg-3:#EAECEF; --surface:#FFFFFF; --surface-2:#F6F7F9;
+  --line:#D6D9DF; --line-hot:#AEB4BF;
+  --violet:#46506B; --violet-rgb:70,80,107;
+  --magenta:#D9A531; --magenta-rgb:217,165,49; --magenta-hi:#E6B850;
+  --gold:#5E8A74; --ink-accent:#96700F;
+  --text:#1B1E26; --soft:#434956; --muted:#6B7383; --dim:#959DAA;
+  --on-primary:#FFFFFF; --on-accent:#1B1E26;
+}
+
+/* Plum & Teal — greige paper, muted plum, dusty teal */
+:root[data-palette="plum"]{
+  --bg:#F2F0F2; --bg-rgb:242,240,242;
+  --bg-2:#E9E6EA; --bg-3:#EDEAEE; --surface:#FFFFFF; --surface-2:#F7F5F8;
+  --line:#DCD6DE; --line-hot:#B6ACBA;
+  --violet:#6B5570; --violet-rgb:107,85,112;
+  --magenta:#4E8C8A; --magenta-rgb:78,140,138; --magenta-hi:#5EA2A0;
+  --gold:#B07C4E; --ink-accent:#3E7472;
+  --text:#211E24; --soft:#474350; --muted:#70697A; --dim:#9A93A2;
+  --on-primary:#FFFFFF; --on-accent:#FFFFFF;
+}
+
+/* the original dark one, kept for comparison */
+:root[data-palette="violet"]{
+  --bg:#0D0A14; --bg-rgb:13,10,20;
+  --bg-2:#110C1B; --bg-3:#140F20; --surface:#17121F; --surface-2:#1E1729;
+  --line:#2E2440; --line-hot:#4A3570;
+  --violet:#A855F7; --violet-rgb:168,85,247;
+  --magenta:#FF4D9D; --magenta-rgb:255,77,157; --magenta-hi:#FF6CAE;
+  --gold:#FFD24A; --ink-accent:#FF4D9D;
+  --text:#EDE9F5; --soft:#D3CADF; --muted:#9D92B6; --dim:#6B6186;
+  --on-primary:#14081F; --on-accent:#160810;
+  --scan:.16; --glow:.55; --glow-btn:.45;
+  --panel-shadow:none;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:60;background:rgba(var(--bg-rgb),.92);
+}
+a{color:inherit}
+img{max-width:100%}
+::selection{background:var(--magenta);color:var(--on-accent)}
+
+h1,h2,h3{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 125;
+  font-weight:800;
+  line-height:.98;
+  letter-spacing:-.01em;
+  text-wrap:balance;
+  margin:0;
+}
+
+.rail{
+  width:100%;max-width:var(--rail);margin:0 auto;
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
+}
+
+/* ---- mono utility labels ---------------------------------------------- */
+.tag{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+}
+.tag--violet{color:var(--violet)}
+.tag--magenta{color:var(--ink-accent)}
+
+/* ---- chamfered panel -------------------------------------------------- */
+.panel{
+  position:relative;
+  background:var(--line);
+  clip-path:polygon(var(--chamfer) 0,100% 0,100% calc(100% - var(--chamfer)),calc(100% - var(--chamfer)) 100%,0 100%,0 var(--chamfer));
+  transition:background .25s ease;
+  filter:var(--panel-shadow);
+}
+.panel::before{
+  content:"";position:absolute;inset:1px;background:var(--surface);
+  clip-path:polygon(calc(var(--chamfer) - 1px) 0,100% 0,100% calc(100% - var(--chamfer) + 1px),calc(100% - var(--chamfer) + 1px) 100%,0 100%,0 calc(var(--chamfer) - 1px));
+}
+.panel > *{position:relative;z-index:1}
+
+/* ================= HUD BAR ============================================= */
+.hud{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
+  background:rgba(var(--bg-rgb),.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.hud__in{display:flex;align-items:center;gap:20px;height:60px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;flex-shrink:0}
+.mark__box{
+  width:30px;height:30px;display:grid;place-items:center;
+  background:var(--violet);
+  color:var(--on-primary);font-family:var(--display);font-variation-settings:"wdth" 125;
+  font-weight:800;font-size:13px;letter-spacing:-.04em;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+.mark__name{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.hud__nav{display:flex;gap:4px}
+.hud__nav a{
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);text-decoration:none;
+  padding:7px 11px;border:1px solid transparent;transition:.18s ease;
+}
+.hud__nav a:hover,.hud__nav a:focus-visible{color:var(--text);border-color:var(--line-hot);background:var(--surface)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;cursor:pointer;
+  padding:11px 18px;border:0;transition:.2s ease;
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+}
+.btn--hot{background:var(--magenta);color:var(--on-accent);box-shadow:0 0 0 rgba(var(--magenta-rgb),0)}
+.btn--hot:hover{background:var(--magenta-hi);box-shadow:0 0 28px rgba(var(--magenta-rgb),var(--glow-btn))}
+.btn--ghost{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px var(--line-hot)}
+.btn--ghost:hover{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--violet);color:#fff}
+.btn--sm{padding:9px 14px;font-size:10px}
+.hud .btn{flex-shrink:0}
+
+/* ================= HERO ================================================ */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+#shader{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:-2}
+.hero__fade{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,var(--scan)) 0 1px,transparent 1px 3px),
+    radial-gradient(130% 85% at 4% 52%,rgba(var(--bg-rgb),.86) 0%,rgba(var(--bg-rgb),.55) 32%,rgba(var(--bg-rgb),0) 64%),
+    linear-gradient(180deg,rgba(var(--bg-rgb),.3) 0%,rgba(var(--bg-rgb),0) 42%,rgba(var(--bg-rgb),.85) 100%);
+}
+.hero__in{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);gap:52px;align-items:center;padding-block:clamp(60px,10vw,112px)}
+.hero__eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.hero__eyebrow .tag{color:var(--soft)}
+.pulse{width:7px;height:7px;background:var(--magenta);border-radius:50%;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
+.hero h1{font-size:clamp(46px,8.4vw,94px);letter-spacing:-.025em}
+.hero h1 em{font-style:normal;display:block;color:inherit}
+.hero__role{
+  font-family:var(--mono);font-size:clamp(11px,1.5vw,13px);font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--ink-accent);margin:26px 0 0;
+}
+.hero__blurb{max-width:46ch;color:var(--soft);margin:18px 0 0;font-size:17px}
+.hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+
+/* player card */
+.card-id{padding:26px}
+.card-id__top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.stat{display:grid;grid-template-columns:86px minmax(0,1fr);gap:14px;padding:13px 0;border-bottom:1px solid rgba(46,36,64,.65)}
+.stat:last-child{border-bottom:0;padding-bottom:0}
+.stat dt{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);padding-top:3px}
+.stat dd{margin:0;font-size:14px;font-weight:600;line-height:1.45}
+.stat dd span{display:block;font-weight:400;color:var(--muted);font-size:13px}
+
+/* ================= SECTIONS ============================================ */
+section{position:relative}
+.band{padding-block:clamp(56px,8vw,96px)}
+.band--alt{background:var(--bg-2);border-block:1px solid var(--line)}
+.band--warm{background:var(--bg-3);border-block:1px solid var(--line)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.head h2{font-size:clamp(28px,4.4vw,44px)}
+.head p{margin:10px 0 0;color:var(--muted);max-width:52ch}
+.rule{height:1px;background:linear-gradient(90deg,var(--violet),transparent);margin-bottom:14px;width:64px}
+
+/* loadout */
+.loadout{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px}
+.slot{padding:22px}
+.slot h3{font-size:13px;font-family:var(--mono);font-variation-settings:normal;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;list-style:none;margin:0;padding:0}
+.chips li{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  padding:6px 10px;background:var(--surface-2);color:var(--soft);
+  box-shadow:inset 0 0 0 1px var(--line);
+}
+.slot--focus .chips li{background:rgba(var(--violet-rgb),.1);box-shadow:inset 0 0 0 1px rgba(var(--violet-rgb),.38);color:var(--text)}
+
+/* experience */
+.log{display:grid;gap:18px}
+.log__main{padding:30px}
+.sub{
+  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-accent);margin:26px 0 14px;
+  display:flex;align-items:center;gap:12px;
+}
+.sub::after{content:"";flex:1;height:1px;background:var(--line)}
+.sub:first-of-type{margin-top:22px}
+.metrics{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:18px;
+  margin-top:26px;padding-top:22px;border-top:1px solid var(--line);
+}
+.metric b{display:block;font-family:var(--display);font-variation-settings:"wdth" 125;font-size:30px;font-weight:800;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.metric small{display:block;margin-top:7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.65}
+.log__title{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin-bottom:6px}
+.log__title h3{font-size:24px}
+.log__org{color:var(--muted);font-size:15px;margin:0 0 20px}
+.obj{list-style:none;margin:0;padding:0;display:grid;gap:13px}
+.obj li{position:relative;padding-left:24px;color:var(--soft);font-size:15px}
+.obj li::before{
+  content:"";position:absolute;left:0;top:.52em;width:9px;height:9px;
+  background:var(--violet);transform:rotate(45deg);box-shadow:0 0 10px rgba(var(--violet-rgb),var(--glow));
+}
+.readouts{display:grid;gap:14px}
+.readout{padding:20px}
+.readout b{display:block;font-family:var(--display);font-variation-settings:"wdth" 125;font-size:40px;font-weight:800;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.readout small{display:block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);line-height:1.6}
+.meter{height:4px;background:var(--line);margin-top:14px;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--magenta))}
+
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.proj{display:flex;flex-direction:column;min-height:258px}
+.proj:hover{background:var(--line-hot)}
+.proj__in{display:flex;flex-direction:column;gap:14px;padding:24px;flex:1}
+.proj__top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.proj__glyph{width:42px;height:42px;color:var(--violet);flex-shrink:0;transition:color .25s ease,transform .35s ease}
+.proj:hover .proj__glyph{color:var(--magenta);transform:translateY(-3px)}
+.proj h3{font-size:21px;margin-top:2px}
+.proj p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
+.proj__links{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
+.feature{grid-column:span 2}
+@media (max-width:719px){.feature{grid-column:span 1}}
+
+/* origin work */
+.works{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px;align-items:start}
+.works + .works{margin-top:20px}
+.work__in{padding:20px;display:flex;flex-direction:column;gap:14px}
+.shot{
+  display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;
+  background:var(--surface-2);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+}
+.shot--tall{aspect-ratio:5/4}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:10px}
+.shots .shot{aspect-ratio:1/1}
+.shots video.shot{aspect-ratio:16/10;object-fit:contain}
+.shotbtn{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.shotbtn .shot{transition:opacity .2s ease,transform .3s ease}
+.shotbtn:hover .shot{opacity:.85}
+.shotbtn:hover .shot--tall,.shotbtn:hover .shot:not(.shots .shot){opacity:.9}
+video.shot{aspect-ratio:auto;object-fit:contain;background:#4A4A4A;cursor:default}
+.works .sub{margin-top:0}
+
+/* interactive viewer — full width, outside the card grid so auto-fit can
+   collapse empty tracks instead of leaving a gap beside two cards */
+.viewer{display:block;width:100%;margin-bottom:20px}
+.viewer__in{padding:20px;display:flex;flex-direction:column;gap:14px}
+.viewer__stage{
+  position:relative;width:100%;aspect-ratio:16/9;min-height:260px;overflow:hidden;
+  background:var(--surface-2);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+}
+.viewer__stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.viewer__hint{
+  position:absolute;left:12px;bottom:12px;pointer-events:none;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);background:rgba(var(--bg-rgb),.72);padding:6px 10px;
+}
+.viewer__bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.toggle{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;cursor:pointer;padding:9px 13px;border:0;
+  background:var(--surface-2);color:var(--muted);
+  box-shadow:inset 0 0 0 1px var(--line);transition:.18s ease;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+.seg button:hover,.toggle:hover{color:var(--text);box-shadow:inset 0 0 0 1px var(--line-hot)}
+.seg button[aria-pressed="true"]{background:var(--violet);color:var(--on-primary);box-shadow:none}
+.toggle[aria-pressed="true"]{background:var(--magenta);color:var(--on-accent);box-shadow:none}
+.toggle{margin-left:auto}
+@media (max-width:620px){.toggle{margin-left:0}}
+
+/* lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  background:rgba(var(--bg-rgb),.95);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+}
+.lightbox img{
+  max-width:100%;max-height:78vh;width:auto;object-fit:contain;
+  box-shadow:0 24px 70px rgba(46,36,48,.22);
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);
+}
+.lightbox figcaption{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);
+  max-width:60ch;text-align:center;line-height:1.7;
+}
+.lightbox__close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(18px,env(safe-area-inset-right,0px))}
+.work__meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.work h3{font-size:22px}
+.work p{margin:0;color:var(--soft);font-size:14.5px}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+.about p{color:var(--soft);margin:0 0 18px}
+.about p:last-child{margin-bottom:0}
+.about .lead{font-size:19px;color:var(--text);font-weight:500}
+.origin{padding:26px;align-self:start}
+.origin h3{font-size:15px;font-family:var(--mono);font-variation-settings:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta);margin-bottom:16px}
+.origin ol{margin:0;padding:0;list-style:none;display:grid;gap:0}
+.origin li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;padding:14px 0;border-bottom:1px solid rgba(46,36,64,.7)}
+.origin li:last-child{border-bottom:0;padding-bottom:0}
+.origin li:first-child{padding-top:0}
+.origin b{font-family:var(--mono);font-size:11px;color:var(--violet);padding-top:3px}
+.origin span{font-size:14.5px;color:var(--soft)}
+
+/* contact */
+.contact{text-align:center;padding-block:clamp(60px,9vw,108px)}
+.contact h2{font-size:clamp(32px,6vw,60px)}
+.contact > p{color:var(--muted);max-width:44ch;margin:16px auto 0}
+.mailbox{
+  display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+  margin-top:34px;padding:14px 14px 14px 22px;background:var(--surface);
+  box-shadow:inset 0 0 0 1px var(--line-hot);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+}
+.mailbox code{font-family:var(--mono);font-size:15px;color:var(--text);user-select:all;word-break:break-all}
+.socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+
+footer{border-top:1px solid var(--line);padding-block:26px}
+.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+
+:focus-visible{outline:2px solid var(--magenta);outline-offset:3px}
+
+
+
+@media (max-width:860px){
+  .hero__in{grid-template-columns:1fr;gap:38px}
+  .log{grid-template-columns:1fr}
+  .readouts{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+  .about{grid-template-columns:1fr;gap:28px}
+  .hud__nav{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+<header class="hud">
+  <div class="rail hud__in">
+    <a class="mark" href="#top">
+      <span class="mark__box">GS</span>
+      <span class="mark__name">Gloria Shin</span>
+    </a>
+    <nav class="hud__nav">
+      <a href="#loadout">Loadout</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#studio">Studio</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="btn btn--ghost btn--sm" href="https://www.gloriashin.me/resume">Resume</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <canvas id="shader" aria-hidden="true"></canvas>
+    <div class="hero__fade" aria-hidden="true"></div>
+    <div class="rail hero__in">
+      <div>
+        <div class="hero__eyebrow">
+          <span class="pulse" aria-hidden="true"></span>
+          <span class="tag">Los Angeles, CA &middot; B.S. Computer Science, University of Utah</span>
+        </div>
+        <h1>Gloria <em>Shin</em></h1>
+        <p class="hero__role">Full-stack engineer &nbsp;/&nbsp; Go &middot; React &middot; AI tooling</p>
+        <p class="hero__blurb">I build systems that have to hold up in front of real people: live event platforms, multiplayer mobile games, community apps. Different products, same standard.</p>
+        <div class="hero__cta">
+          <a class="btn btn--hot" href="#projects">See the work</a>
+          <a class="btn btn--ghost" href="https://github.com/bestcreator01">GitHub</a>
+        </div>
+      </div>
+
+      <div class="panel card-id">
+        <div class="card-id__top">
+          <span class="tag tag--violet">Player card</span>
+          <span class="tag">LA, CA</span>
+        </div>
+        <dl style="margin:0">
+          <div class="stat"><dt>Current</dt><dd>AI Software Engineer Intern<span>Xsolla, Los Angeles</span></dd></div>
+          <div class="stat"><dt>Shipping</dt><dd>2.9+ years in production<span>Enterprise web, live events, mobile</span></dd></div>
+          <div class="stat"><dt>Ships in</dt><dd>Go &middot; TypeScript &middot; React<span>Plus PostgreSQL, Java, Python, C/C++</span></dd></div>
+          <div class="stat"><dt>Degree</dt><dd>B.S. Computer Science<span>University of Utah, 3.8 GPA, Dec 2025</span></dd></div>
+          <div class="stat"><dt>Method</dt><dd>Full stack, agent-assisted<span>Claude Code and MCP for speed; architecture and review stay mine</span></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--alt" id="loadout">
+    <div class="rail">
+      <div class="head">
+        <div>
+          <div class="rule"></div>
+          <span class="tag tag--violet">01 &middot; Loadout</span>
+          <h2>What I work with</h2>
+        </div>
+      </div>
+      <div class="loadout">
+        <div class="panel slot slot--focus">
+          <h3>AI &amp; agentic tools</h3>
+          <ul class="chips"><li>Claude Code</li><li>GitHub Copilot</li><li>Windsurf</li><li>v0.dev</li><li>MCP</li><li>Prompt engineering</li><li>AI-assisted scaffolding</li></ul>
+        </div>
+        <div class="panel slot">
+          <h3>Languages</h3>
+          <ul class="chips"><li>Go</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li><li>Java</li><li>Python</li><li>C#</li><li>C/C++</li></ul>
+        </div>
+        <div class="panel slot">
+          <h3>Frameworks &amp; libraries</h3>
+          <ul class="chips"><li>React</li><li>Next.js</li><li>React Native</li><li>Expo</li><li>Angular</li><li>Node.js</li><li>Vite</li><li>Huma</li><li>Fiber</li><li>GORM</li><li>Spring Boot</li><li>Django</li><li>Tailwind</li><li>shadcn/ui</li><li>SWR</li><li>PyTorch</li></ul>
+        </div>
+        <div class="panel slot">
+          <h3>Testing &amp; quality</h3>
+          <ul class="chips"><li>Test-driven development</li><li>Go table-driven tests</li><li>Playwright</li><li>Vitest</li><li>IDOR &amp; tampering tests</li><li>Input validation</li><li>SonarQube gates</li><li>Coverage</li></ul>
+        </div>
+        <div class="panel slot">
+          <h3>Infrastructure</h3>
+          <ul class="chips"><li>Docker</li><li>Docker Compose</li><li>PostgreSQL</li><li>Liquibase</li><li>GitLab CI/CD</li><li>Jenkins</li><li>Vercel</li><li>AWS RDS</li><li>Neon</li><li>WSO2 Gateway</li></ul>
+        </div>
+        <div class="panel slot">
+          <h3>Observability &amp; APIs</h3>
+          <ul class="chips"><li>Datadog</li><li>OpenTelemetry</li><li>Structured logging</li><li>REST</li><li>OpenAPI</li><li>Firebase Auth</li><li>JWT</li><li>CSRF protection</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="experience">
+    <div class="rail">
+      <div class="head">
+        <div>
+          <div class="rule"></div>
+          <span class="tag tag--violet">02 &middot; Experience</span>
+          <h2>Field log</h2>
+          <p>Close to three years of production work, from enterprise web apps to platforms running live on an event floor.</p>
+        </div>
+      </div>
+      <div class="log">
+
+        <div class="panel log__main">
+          <div class="log__title">
+            <h3>AI Software Engineer Intern</h3>
+            <span class="tag tag--magenta">Sep 2026 &mdash; Present</span>
+          </div>
+          <p class="log__org">Xsolla &middot; Los Angeles, CA</p>
+
+          <p class="sub">Plugin platform readiness</p>
+          <ul class="obj">
+            <li>Built reference plugins on two internal platforms, a React storefront builder and an Expo React Native app, following only the written developer path with Claude Code and MCP agent skills. Logged 50+ friction points, including a CLI bug that crashed plugins and docs that no longer matched the code.</li>
+            <li>Turned those friction logs into automated readiness evals: a fresh AI agent rebuilds the plugin from the docs alone and is scored against checkpoints across multiple models. Results land in a Neo4j graph, with Playwright and a Python doc-drift checker covering the deterministic checks.</li>
+            <li>Proposed plugin API contracts to platform leads: a capability-manifest schema declaring each plugin's data reads, writes and events, plus a versioning policy enforced in CI. It came out of finding five packages consuming login state five different ways.</li>
+          </ul>
+
+          <p class="sub">Event matchmaking &mdash; gamescom asia, G-STAR</p>
+          <ul class="obj">
+            <li>Selected as the dedicated engineer for an invite-only B2B matchmaking platform in Go, PostgreSQL and Docker. Built the live venue display and owned QA across live events, catching 18 bugs and driving 9 to fixes, including a seat-lock failure traced to two conflicting features and reproduced in a Go test.</li>
+            <li>Built a 57-test Playwright suite against the real API and database, covering concurrent staff edits, failure drills (API restart, slow network, offline devices) and event-scale load. It gave the team the evidence behind G-STAR's go/no-go decision.</li>
+            <li>Built a matching simulator that runs anonymized real rosters through the algorithm before each event, surfacing unmatched attendees and scoring problems ahead of time.</li>
+          </ul>
+
+          <div class="metrics">
+            <div class="metric"><b>57</b><small>Playwright tests against the real stack</small></div>
+            <div class="metric"><b>18</b><small>Bugs caught live, 9 driven to fixes</small></div>
+            <div class="metric"><b>&lt;60ms</b><small>p95 under event-scale load</small></div>
+            <div class="metric"><b>50+</b><small>Developer friction points logged</small></div>
+          </div>
+        </div>
+
+        <div class="panel log__main">
+          <div class="log__title">
+            <h3>Software Engineer Intern</h3>
+            <span class="tag tag--magenta">Mar 2024 &mdash; Aug 2026</span>
+          </div>
+          <p class="log__org">University of Utah &middot; Salt Lake City, UT &middot; Repay App</p>
+          <ul class="obj">
+            <li>Built the Upload History and Reports pages in Angular 17 and Spring Boot 3, cutting UI response times 40% with Angular Query caching, to UX spec and responsive across breakpoints.</li>
+            <li>Adopted Windsurf and GitHub Copilot as primary tools on the Reports page, which sped up implementation, caught errors earlier, and carried the refactoring and documentation work.</li>
+            <li>Configured and deployed across dev and test environments with Docker, Gradle and Jenkins CI/CD, and integrated role-based auth with RxJS and SSO through Spring Security, managing APIs via the WSO2 gateway.</li>
+            <li>Designed delinquency notifications for the Repay Notification service, validating borrower data and tightening data integrity with Spring Data JPA.</li>
+            <li>Reached 90% unit test coverage with JUnit, scaffolding tests from a self-authored test specification to expand edge-case coverage.</li>
+          </ul>
+
+          <div class="metrics">
+            <div class="metric"><b>40%</b><small>Faster UI response after caching rework</small></div>
+            <div class="metric"><b>90%</b><small>JUnit coverage on shipped services</small></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--warm" id="projects">
+    <div class="rail">
+      <div class="head">
+        <div>
+          <div class="rule"></div>
+          <span class="tag tag--violet">03 &middot; Projects</span>
+          <h2>Built and shipped</h2>
+          <p>From web and mobile apps to computer graphics experiments.</p>
+        </div>
+        <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01">All repositories</a>
+      </div>
+
+      <p class="sub">Computer graphics &mdash; CS5610, 2025</p>
+
+      <article class="panel work viewer">
+          <div class="viewer__in">
+            <div class="viewer__stage" id="stage">
+              <canvas id="gl"></canvas>
+              <div class="viewer__hint" id="glHint">Loading the mesh&hellip;</div>
+            </div>
+            <div class="viewer__bar">
+              <div class="seg" role="group" aria-label="Shading mode">
+                <button type="button" data-mode="shaded" aria-pressed="false">Shaded</button>
+                <button type="button" data-mode="textured" aria-pressed="true">Textured</button>
+                <button type="button" data-mode="relief" aria-pressed="false">Displaced</button>
+                <button type="button" data-mode="chrome" aria-pressed="false">Environment</button>
+              </div>
+              <button type="button" class="toggle" id="wireBtn" aria-pressed="false">Wireframe</button>
+            </div>
+            <div class="work__meta">
+              <h3>Shading sandbox</h3>
+              <span class="tag tag--magenta">Drag to rotate</span>
+            </div>
+            <p>The Utah teapot, modeled a few buildings over from where I took this class, with the same texture, normal and cube maps from my CS5610 assignments, running live in your browser. Shaded is the bare Blinn-Phong pass, lit from the eye, with the red diffuse and shininess straight out of my fragment shader. Textured adds a diffuse and specular map. Displaced is the tessellation assignment: a flat, heavily subdivided quad with my normal and displacement maps pushing a teapot out of it, which is worth a look under Wireframe. Environment reflects a cube map off the body. Wireframe shows what the shading is actually sitting on.</p>
+        </div>
+      </article>
+
+      <div class="works">
+
+        <article class="panel work">
+          <div class="work__in">
+            <video class="shot" src="img/smoke-render.mp4" poster="img/smoke-poster.jpg" controls loop muted playsinline preload="none" aria-label="Recording of the final project running: a glowing gold lamp with a column of smoke rising from the spout and a blue genie forming above it"></video>
+            <div class="shots">
+              <video class="shot" src="img/smoke-wip.mp4" poster="img/smoke-wip-poster.jpg" controls loop muted playsinline preload="none" aria-label="An earlier version of the project: a refractive sphere of smoke floating over a mirrored plane in an outdoor environment map"></video>
+            </div>
+            <div class="work__meta">
+              <h3>Genie from the Lamp</h3>
+              <span class="tag tag--magenta">Final project &middot; 2025</span>
+            </div>
+            <p>A gold lamp, a column of smoke, and a genie. The smoke is a real-time particle system emitting from the spout and the ground plane: each particle an instanced cube with procedural motion, turbulence and age-based fading, lit with Henyey-Greenstein and Schlick phase functions for directional scattering and modulated by Perlin-Worley and erosion noise volumes so it reads as cloud rather than fog. The genie rises and fades in above the spout once the smoke has built. All real time, and you can orbit the scene while it runs. The second clip is where this started: smoke trapped in a refractive sphere over a mirrored plane, before I threw out the scene and went looking for a better reason for smoke to exist.</p>
+            <div class="proj__links">
+              <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01/smoke-simulation">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/gfx-tessellation.jpg" alt="A teapot and ground plane drawn as a dense yellow wireframe against black, showing the tessellated triangle density across the displaced surface." loading="lazy"></button>
+            <div class="work__meta">
+              <h3>Tessellation</h3>
+              <span class="tag tag--magenta">2025</span>
+            </div>
+            <p>Normal mapping, runtime triangulation and displacement mapping on the GPU. The wireframe is the interesting part: the surface is subdivided on the fly and then pushed around by a displacement map, so the silhouette changes rather than just the lighting.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="sub">Applications</p>
+      <div class="grid">
+
+        <article class="panel proj feature">
+          <div class="proj__in">
+            <div class="proj__top">
+              <span class="tag tag--magenta">Live &middot; Web app</span>
+              <svg class="proj__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 32v-8a12 12 0 0 1 24 0v8l4 5H8z"/>
+                <path d="M20 41a4 4 0 0 0 8 0"/>
+                <path d="M25 16l-4 7h6l-4 7"/>
+              </svg>
+            </div>
+            <h3>WakeUpWars</h3>
+            <p>A social alarm app that turns waking up into a competition. Friends set challenges, and you do not get to dismiss the alarm until you have actually beaten one.</p>
+            <div class="proj__links">
+              <a class="btn btn--hot btn--sm" href="https://v0-wakeupwars.vercel.app/">Open site</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel proj">
+          <div class="proj__in">
+            <div class="proj__top">
+              <span class="tag tag--violet">Education</span>
+              <svg class="proj__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="24" cy="24" r="15"/>
+                <path d="M9 24h30M24 9c4 5 4 25 0 30M24 9c-4 5-4 25 0 30"/>
+              </svg>
+            </div>
+            <h3>Asia Travel Guide</h3>
+            <p>An interactive educational app that walks you through countries across Asia, built around exploration rather than a wall of text.</p>
+            <div class="proj__links">
+              <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01/asia-travel-guide">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel proj">
+          <div class="proj__in">
+            <div class="proj__top">
+              <span class="tag tag--violet">Tool</span>
+              <svg class="proj__glyph" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="8" y="8" width="32" height="32"/>
+                <path d="M8 18h32M8 29h32M19 8v32M30 8v32"/>
+                <rect x="19" y="18" width="11" height="11" fill="currentColor" stroke="none" opacity=".85"/>
+                <rect x="8" y="29" width="11" height="11" fill="currentColor" stroke="none" opacity=".45"/>
+              </svg>
+            </div>
+            <h3>Sprite Editor</h3>
+            <p>A desktop tool for drawing and animating 2D sprites frame by frame, with the pixel grid, palette and preview you would actually want while working.</p>
+            <div class="proj__links">
+              <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01/sprite-editor">Source</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--alt" id="studio">
+    <div class="rail">
+      <div class="head">
+        <div>
+          <div class="rule"></div>
+          <span class="tag tag--violet">04 &middot; Studio</span>
+          <h2>Art and making</h2>
+          <p>The thread that runs underneath everything else. 3D modeling and concept art in 2020, which is what pulled me toward code in the first place, and kinetic arts and embedded systems in 2024, several semesters into the CS degree, because I never stopped signing up for them.</p>
+        </div>
+      </div>
+
+      <p class="sub">3D modeling &mdash; 2020</p>
+      <div class="works">
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot shot--tall" src="img/art-minnie.jpg" alt="Presentation sheet for a modeled storybook cottage: texture atlas, four orthographic renders and a large beauty render, labelled 18588 tris." loading="lazy"></button>
+            <div class="work__meta">
+              <h3>Minnie's House</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>A storybook cottage modeled, UV-unwrapped and hand-textured to a real budget: 18,588 triangles, with every shingle, hedge and stone pulled from a texture atlas I painted myself. Made with love, and it shows in the heart-shaped weathervanes.</p>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <video class="shot shot--tall" src="img/character-anim.mp4" poster="img/character-anim-poster.jpg" controls loop muted playsinline preload="none" aria-label="Short animation of the rigged character performing a dance move in the Maya viewport"></video>
+            <div class="shots">
+              <button class="shotbtn" type="button"><img class="shot" src="img/art-character.jpg" alt="The finished character model in T-pose: a stylized figure in bunny-eared pajamas with hand-painted fabric textures and rabbit slippers." loading="lazy"></button>
+            </div>
+            <div class="work__meta">
+              <h3>Bunny Pajamas</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>A stylized character taken the whole way: modeled, hand-textured down to the rabbit print on the pajamas, then rigged and animated. Press play for the dance.</p>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/art-palm.jpg" alt="A potted palm modeled in a 3D viewport, fronds built from textured cards over a sculpted trunk." loading="lazy"></button>
+            <div class="work__meta">
+              <h3>Palm study</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>An early asset study in foliage: alpha-mapped frond cards arranged to read as a full canopy from any angle without spending geometry on it, over a trunk with a tiling bark texture.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="sub">Concept art &mdash; 2020</p>
+      <div class="works">
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/art-environment.jpg" alt="Environment concept process sheet: a page of thumbnail storyboards, a greyscale value study of a curling vine landscape, and three color keys of the same scene in green, purple and blue." loading="lazy"></button>
+            <div class="work__meta">
+              <h3>Environment concept</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>A full pipeline on one sheet: twenty thumbnails, a chosen frame, a greyscale value pass, then three color keys of the same curling vine landscape to test how far the mood could be pushed without touching the drawing.</p>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/art-weapon.jpg" alt="Weapon concept sheet: twenty silhouette thumbnails, a line drawing, a greyscale render and a final colored piece of a curved organic firearm." loading="lazy"></button>
+            <div class="work__meta">
+              <h3>The Beagun</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>Bean plus gun plus sword. Twenty silhouettes narrowed to one, then line, then greyscale, then color. The brief was a weapon that reads instantly at thumbnail size, which is why it keeps the vine curl and the tusks.</p>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/art-bio.jpg" alt="A character bio sheet listing name, status, abilities and weaknesses above a grid of costume thumbnails and a finished rendered figure." loading="lazy"></button>
+            <div class="shots">
+              <button class="shotbtn" type="button"><img class="shot" src="img/art-iterations.jpg" alt="Fifteen costume iterations of the same character drawn as light pencil thumbnails, each with a different silhouette and a small companion sprite." loading="lazy"></button>
+            </div>
+            <div class="work__meta">
+              <h3>Character design</h3>
+              <span class="tag tag--magenta">2020</span>
+            </div>
+            <p>Francesca: a fifteen-year-old prince who heals, fights with magic and is undone by cake. Written as a bio sheet first, then fifteen costume passes, then one final render, each iteration keeping the pointy ears and the little flying companion.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="sub">Kinetic arts and embedded systems &mdash; 2024</p>
+      <div class="works">
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/mirror-live.jpg" alt="The finished mirror lit up on a workbench, an etched portrait glowing out of the glass inside a sculpted black frame." loading="lazy"></button>
+            <div class="shots">
+              <button class="shotbtn" type="button"><img class="shot" src="img/mirror-etched.jpg" alt="The etched acrylic portrait lit from behind, the lines catching the light against dark glass." loading="lazy"></button>
+              <button class="shotbtn" type="button"><img class="shot" src="img/mirror-panel.jpg" alt="The hand-painted backing panel: a silhouette inside a gold filigree oval on a pale textured ground." loading="lazy"></button>
+              <button class="shotbtn" type="button"><img class="shot" src="img/mirror-rig.jpg" alt="The assembled rig with a webcam clipped to the top of the frame and the painted panel behind the glass." loading="lazy"></button>
+              <button class="shotbtn" type="button"><img class="shot" src="img/mirror-parts.jpg" alt="Components laid out mid-build: the LED ring taped to the acrylic, a sensor board, the cut filigree pieces and the frame mat." loading="lazy"></button>
+            </div>
+            <div class="work__meta">
+              <h3>Mirror, Mirror</h3>
+              <span class="tag tag--magenta">2024</span>
+            </div>
+            <p>A fairytale mirror that reacts to whoever stands in front of it. A webcam feeds real-time emotion detection, and the mirror answers by lighting an LED ring behind a hand-etched acrylic portrait so the face surfaces out of the glass. The painted backing panel and the sculpted filigree frame are both hand-made.</p>
+            <div class="proj__links">
+              <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01/mirrormirror">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot" src="img/shark-glow.jpg" alt="The finished piece in the dark: an articulated shark and seaweed printed in glow-in-the-dark filament, lit up green inside the reef." loading="lazy"></button>
+            <div class="shots">
+              <button class="shotbtn" type="button"><img class="shot" src="img/shark-lit.jpg" alt="The same diorama with the lights on: a painted cardboard reef cave, sculpted clay fish and turtles, and the shark mounted on a servo-driven turntable." loading="lazy"></button>
+            </div>
+            <div class="work__meta">
+              <h3>Glowy Shark</h3>
+              <span class="tag tag--magenta">2024</span>
+            </div>
+            <p>An articulated shark printed in glow-in-the-dark filament, mounted on a servo that turns it through a reef built from a painted cardboard box, with sculpted clay fish and turtles scattered around it. Lights on, it is a diorama. Lights off, only the creatures remain.</p>
+            <div class="proj__links">
+              <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01/glowyshark">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel work">
+          <div class="work__in">
+            <button class="shotbtn" type="button"><img class="shot shot--tall" src="img/flower-lit.jpg" alt="A paper lily glowing under a glass cloche, warm LEDs at the tips of its stamens." loading="lazy"></button>
+            <div class="shots">
+              <button class="shotbtn" type="button"><img class="shot" src="img/flower-dome.jpg" alt="The cloche on the lab bench, the lily lit from within above a nest of moss and roots." loading="lazy"></button>
+              <button class="shotbtn" type="button"><img class="shot" src="img/flower-build.jpg" alt="The flower held in hand in the lab, wires running down the stem to a breadboard and microcontroller." loading="lazy"></button>
+              <button class="shotbtn" type="button"><img class="shot" src="img/flower-guts.jpg" alt="The electronics hidden in a repurposed wooden box: an Arduino, a breadboard and bundled wiring." loading="lazy"></button>
+            </div>
+            <div class="work__meta">
+              <h3>Tangled Flower</h3>
+              <span class="tag tag--magenta">2024</span>
+            </div>
+            <p>A paper lily that glows. Hand-cut and painted petals, LEDs threaded up through the stamens, and wiring that runs down the stem to an Arduino and a light sensor tucked inside a repurposed wooden box. Under the cloche the hardware disappears and only the bloom is left.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="about">
+    <div class="rail">
+      <div class="head">
+        <div>
+          <div class="rule"></div>
+          <span class="tag tag--violet">05 &middot; About</span>
+          <h2>How I got here</h2>
+        </div>
+      </div>
+      <div class="about">
+        <div>
+          <p class="lead">I am a full-stack engineer with close to three years of production experience, currently building event platforms in Go and React that run live at international events.</p>
+          <p>I did not start in computer science. I started in film and media arts, because making things is the part I have never been able to put down. In 2020 that meant 3D modeling and concept art, and getting completely absorbed in how digital shapes, lighting and materials are constructed behind the scenes. An intro Python course in fall 2021 turned out to be the most fun I had had in ages, so I switched to computer science the following spring.</p>
+          <p>The art side never went anywhere. In 2024, several semesters into the degree and already interning, I was still signing up for kinetic arts and embedded systems: a mirror that reads your face, a paper flower wired to an Arduino, a shark that glows in the dark. I like the problems that sit between the two.</p>
+          <p>These days I work at Xsolla in Los Angeles, where I have been the dedicated engineer on an invite-only B2B matchmaking platform that ran at gamescom asia and G-STAR, and have spent the rest of my time stress-testing our plugin platform the way an outside developer would experience it. Before that I spent two and a half years on enterprise Angular and Spring Boot at the University of Utah.</p>
+          <p>I use AI tools like Claude Code, Copilot and Windsurf to move faster, but architecture, testing and code review stay in my own hands. I write tests first and think like a tester: ID swaps, tampered requests, the edge case nobody wrote down. Mostly I am drawn to projects that solve a real problem for real people.</p>
+        </div>
+        <div class="panel origin">
+          <h3>Timeline</h3>
+          <ol>
+            <li><b>01</b><span>2020: starts college as a Film and Media Arts major</span></li>
+            <li><b>02</b><span>2020: 3D modeling and concept art courses, and an obsession with how it all gets built</span></li>
+            <li><b>03</b><span>Fall 2021: intro to Python, and coding turns out to be genuinely fun</span></li>
+            <li><b>04</b><span>Spring 2022: switches to Computer Science at the University of Utah</span></li>
+            <li><b>05</b><span>Mar 2024: Software Engineer Intern at the University of Utah, shipping enterprise Angular and Spring Boot</span></li>
+            <li><b>06</b><span>Dec 2025: graduates with a B.S. in Computer Science, 3.8 GPA</span></li>
+            <li><b>07</b><span>Sep 2026: joins Xsolla in Los Angeles as an AI Software Engineer Intern</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band--alt" style="border-top:1px solid var(--line)" id="contact">
+    <div class="rail contact">
+      <span class="tag tag--violet">06 &middot; Contact</span>
+      <h2>Let's build something</h2>
+      <p>Based in Los Angeles. The fastest way to reach me is email.</p>
+      <div class="mailbox">
+        <code id="email">glorystar0529@gmail.com</code>
+        <button class="btn btn--hot btn--sm" id="copy" type="button">Copy</button>
+      </div>
+      <div class="socials">
+        <a class="btn btn--ghost btn--sm" href="https://www.linkedin.com/in/shin-gloria/">LinkedIn</a>
+        <a class="btn btn--ghost btn--sm" href="https://github.com/bestcreator01">GitHub</a>
+        <a class="btn btn--ghost btn--sm" href="https://www.gloriashin.me/resume">Resume</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="rail foot">
+    <span class="tag">&copy; 2026 Gloria Shin</span>
+    <span class="tag">Built for every screen size this time</span>
+  </div>
+</footer>
+
+<figure class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo" hidden>
+  <button class="btn btn--ghost btn--sm lightbox__close" type="button" id="lightboxClose">Close</button>
+  <img id="lightboxImg" src="" alt="">
+  <figcaption id="lightboxCap"></figcaption>
+</figure>
+
+
+
+<script>
+/* ---- hero: domain-warped fbm smoke field ------------------------------ */
+(function () {
+  var cv = document.getElementById('shader');
+  if (!cv) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gl = null;
+  try { gl = cv.getContext('webgl', { antialias: false, alpha: false, depth: false }); } catch (e) { gl = null; }
+
+  if (!gl) {
+    cv.style.background = 'radial-gradient(130% 90% at 24% 18%, var(--line-hot) 0%, var(--bg-2) 45%, var(--bg) 80%)';
+    return;
+  }
+
+  var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
+  var fs = [
+    'precision highp float;',
+    'uniform vec2 u_res; uniform float u_t;',
+    'uniform vec3 u_bg; uniform vec3 u_c1; uniform vec3 u_c2; uniform vec3 u_c3; uniform float u_s;',
+    'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}',
+    'float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);',
+    ' return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x),f.y);}',
+    'float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=0.5;}return v;}',
+    'void main(){',
+    ' vec2 uv=gl_FragCoord.xy/u_res;',
+    ' vec2 p=uv; p.x*=u_res.x/u_res.y; p*=2.1;',
+    ' float t=u_t*0.042;',
+    ' vec2 q=vec2(fbm(p+t),fbm(p+vec2(5.2,1.3)-t));',
+    ' vec2 r=vec2(fbm(p+3.6*q+vec2(1.7,9.2)+t*1.3),fbm(p+3.6*q+vec2(8.3,2.8)-t*1.05));',
+    ' float f=fbm(p+3.6*r);',
+    ' vec3 bg=u_bg;',
+    ' vec3 col=bg;',
+    ' col=mix(col,u_c1,clamp(f*2.1-0.52,0.0,1.0)*u_s);',
+    ' col=mix(col,u_c2,clamp(q.x*2.0-0.42,0.0,1.0)*0.95*u_s);',
+    ' col=mix(col,u_c3,clamp(r.y*1.9-0.55,0.0,1.0)*0.8*u_s);',
+    ' float vig=smoothstep(1.35,0.3,length(uv-vec2(0.46,0.52)));',
+    ' col=mix(bg,col,vig);',
+    ' col=mix(bg,col,smoothstep(0.0,0.42,uv.y));',
+    ' col+=(hash(gl_FragCoord.xy+u_t)-0.5)*0.022;',
+    ' gl_FragColor=vec4(col,1.0);',
+    '}'
+  ].join('\n');
+
+  function sh(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) return null;
+    return s;
+  }
+  var v = sh(gl.VERTEX_SHADER, vs), f = sh(gl.FRAGMENT_SHADER, fs);
+  if (!v || !f) {
+    cv.style.background = 'radial-gradient(130% 90% at 24% 18%, var(--line-hot) 0%, var(--bg-2) 45%, var(--bg) 80%)';
+    return;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, v); gl.attachShader(prog, f); gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes = gl.getUniformLocation(prog, 'u_res');
+  var uT = gl.getUniformLocation(prog, 'u_t');
+  var uBg = gl.getUniformLocation(prog, 'u_bg');
+  var uC1 = gl.getUniformLocation(prog, 'u_c1');
+  var uC2 = gl.getUniformLocation(prog, 'u_c2');
+  var uC3 = gl.getUniformLocation(prog, 'u_c3');
+  var uS = gl.getUniformLocation(prog, 'u_s');
+
+  function srgb(hex) {
+    var n = parseInt(hex.slice(1), 16);
+    return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  }
+  window.__shaderPalette = function (bg, c1, c2, c3, s) {
+    gl.useProgram(prog);
+    var a = srgb(bg), b = srgb(c1), c = srgb(c2), d = srgb(c3);
+    gl.uniform3f(uBg, a[0], a[1], a[2]);
+    gl.uniform3f(uC1, b[0], b[1], b[2]);
+    gl.uniform3f(uC2, c[0], c[1], c[2]);
+    gl.uniform3f(uC3, d[0], d[1], d[2]);
+    gl.uniform1f(uS, typeof s === 'number' ? s : 1.0);
+  };
+  window.__shaderPalette('#FDF7F2', '#E27AA6', '#F0B93C', '#8E7AD8', 1.0);
+
+  function resize() {
+    var w = Math.max(1, Math.round(cv.clientWidth * 0.55));
+    var h = Math.max(1, Math.round(cv.clientHeight * 0.55));
+    if (cv.width !== w || cv.height !== h) {
+      cv.width = w; cv.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+    gl.uniform2f(uRes, cv.width, cv.height);
+  }
+
+  function draw(t) {
+    resize();
+    gl.uniform1f(uT, t);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  var visible = true, start = performance.now();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; })
+      .observe(cv.parentNode);
+  }
+
+  window.__shaderRedraw = function () {
+    draw(reduce ? 0 : (performance.now() - start) / 1000);
+  };
+
+  draw(0);
+  if (!reduce) {
+    (function loop(now) {
+      if (visible) draw((now - start) / 1000);
+      requestAnimationFrame(loop);
+    })(start);
+    window.addEventListener('resize', function () { draw((performance.now() - start) / 1000); });
+  } else {
+    window.addEventListener('resize', function () { draw(0); });
+  }
+})();
+
+/* ---- palette ----------------------------------------------------------
+   Five palettes ship with the page. The default is Pastel. To use another,
+   put data-palette="riso" (or sage, butter, plum, violet) on the <html> tag;
+   the CSS tokens and the hero shader both follow it.                     */
+(function () {
+  var PALETTES = {
+    '':       { bg: '#FDF7F2', c1: '#E27AA6', c2: '#F0B93C', c3: '#8E7AD8', s: 1.0 },
+    riso:     { bg: '#F4F2ED', c1: '#5E7FB5', c2: '#E0937A', c3: '#B9AE97', s: 1.0 },
+    sage:     { bg: '#F0F1EC', c1: '#7E9A86', c2: '#D2A0A3', c3: '#B0BBA4', s: 1.0 },
+    butter:   { bg: '#F1F2F4', c1: '#8793AE', c2: '#E3C070', c3: '#AFB9C7', s: 1.0 },
+    plum:     { bg: '#F2F0F2', c1: '#A58FA9', c2: '#7FB6B3', c3: '#C0AEC4', s: 1.0 },
+    violet:   { bg: '#0D0A14', c1: '#6B2FA8', c2: '#A32462', c3: '#2A1B44', s: 1.0 }
+  };
+  function apply() {
+    var p = PALETTES[document.documentElement.getAttribute('data-palette') || ''] || PALETTES[''];
+    if (window.__shaderPalette) {
+      window.__shaderPalette(p.bg, p.c1, p.c2, p.c3, p.s);
+      if (window.__shaderRedraw) window.__shaderRedraw();
+    }
+    if (window.__viewerTheme) window.__viewerTheme();
+  }
+  window.__applyPalette = apply;
+  setTimeout(apply, 0);
+})();
+
+/* ---- interactive teapot viewer ---------------------------------------- */
+(function () {
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('gl');
+  var hint = document.getElementById('glHint');
+  if (!stage || !canvas) return;
+
+  var booted = false, visible = true, raf = null;
+  var renderer, scene, camera, mesh, plane, mats = {}, cube = null, current = 'textured', wire = false;
+  var amb, key, fill, head;
+  var theta = 0.42, phi = 1.38, radius = 3.9, autoSpin = true;
+  var tTheta = theta, tPhi = phi, tRadius = radius;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function say(t) { if (hint) hint.textContent = t; }
+
+  function boot() {
+    if (booted) return;
+    booted = true;
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s.onload = start;
+    s.onerror = function () { say('3D library could not load'); };
+    document.head.appendChild(s);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { io.disconnect(); boot(); }
+    }, { rootMargin: '300px' });
+    io.observe(stage);
+    var vo = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; });
+    vo.observe(stage);
+  } else { boot(); }
+
+  function surface() {
+    var v = getComputedStyle(document.documentElement).getPropertyValue('--surface-2').trim();
+    return v || '#F7F5F1';
+  }
+
+  function start() {
+    if (typeof THREE === 'undefined') { say('3D library could not load'); return; }
+    say('Loading the mesh…');
+
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, 100);
+
+    amb = new THREE.AmbientLight(0xffffff, 0.42); scene.add(amb);
+    key = new THREE.DirectionalLight(0xffffff, 0.95); key.position.set(3, 4.5, 5); scene.add(key);
+    fill = new THREE.DirectionalLight(0xffffff, 0.28); fill.position.set(-4, 1, -3); scene.add(fill);
+    // Project 3 lit from the eye: lightDir (0,0,1) in view space
+    head = new THREE.DirectionalLight(0xffffff, 1.0); head.visible = false; scene.add(head);
+
+    var maxAniso = renderer.capabilities.getMaxAnisotropy();
+    var tl = new THREE.TextureLoader();
+    function tex(url, srgb) {
+      var t = tl.load(url);
+      // the mesh UVs run 0..2, so these have to tile rather than clamp
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.anisotropy = maxAniso;
+      if (srgb) t.encoding = THREE.sRGBEncoding;
+      return t;
+    }
+    var brick = tex('img/gfx/brick.jpg', true);
+    var spec = tex('img/gfx/brick-spec.jpg', false);
+    var norm = tex('img/gfx/teapot-normal.png', false);
+    var disp = tex('img/gfx/teapot-disp.png', false);
+    cube = new THREE.CubeTextureLoader().setPath('img/gfx/')
+      .load(['env-posx.jpg', 'env-negx.jpg', 'env-posy.jpg', 'env-negy.jpg', 'env-posz.jpg', 'env-negz.jpg']);
+    cube.encoding = THREE.sRGBEncoding;
+
+    // diffuse, specular and shininess lifted from her Project 3 fragment shader
+    mats.shaded = new THREE.MeshPhongMaterial({ color: 0xCC0000, specular: 0xffffff, shininess: 16 });
+    // shininess 20 matches Ns in her teapot.mtl
+    mats.textured = new THREE.MeshPhongMaterial({ map: brick, specularMap: spec, specular: 0xcccccc, shininess: 20 });
+    mats.chrome = new THREE.MeshPhongMaterial({ color: 0xffffff, envMap: cube, reflectivity: 1, combine: THREE.MixOperation, specular: 0xffffff, shininess: 120 });
+    // Project 8 pushed this map into a flat, heavily subdivided quad, not onto the teapot
+    mats.relief = new THREE.MeshPhongMaterial({
+      color: 0xE8B0A6, normalMap: norm, displacementMap: disp,
+      displacementScale: 0.45, displacementBias: -0.14,
+      specular: 0x6b6b6b, shininess: 28
+    });
+    plane = new THREE.Mesh(new THREE.PlaneGeometry(2.7, 2.7, 220, 220), mats.relief);
+    plane.visible = false;
+    scene.add(plane);
+
+    fetch('img/gfx/teapot.txt').then(function (r) {
+      if (!r.ok) throw new Error('mesh');
+      return r.text();
+    }).then(function (b64) {
+      var bin = atob(b64.trim()), len = bin.length, u = new Uint8Array(len);
+      for (var i = 0; i < len; i++) u[i] = bin.charCodeAt(i);
+      var buf = u.buffer;
+      var dv = new DataView(buf);
+      var n = dv.getUint32(0, true), ic = dv.getUint32(4, true), u16 = dv.getUint32(8, true) === 1;
+      var data = new Float32Array(buf, 12, n * 8);
+      var ib = new THREE.InterleavedBuffer(data, 8);
+      var geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.InterleavedBufferAttribute(ib, 3, 0));
+      geo.setAttribute('normal', new THREE.InterleavedBufferAttribute(ib, 3, 3));
+      geo.setAttribute('uv', new THREE.InterleavedBufferAttribute(ib, 2, 6));
+      var off = 12 + n * 32;
+      geo.setIndex(new THREE.BufferAttribute(u16 ? new Uint16Array(buf, off, ic) : new Uint32Array(buf, off, ic), 1));
+
+      mesh = new THREE.Mesh(geo, mats.textured);
+      // the .obj came out of 3ds Max, which is Z-up; three.js is Y-up
+      mesh.rotation.x = -Math.PI / 2;
+      scene.add(mesh);
+      resize();
+      say('Drag to rotate · scroll to zoom');
+      loop();
+    }).catch(function () { say('Mesh could not load'); });
+
+    wire3();
+    bind();
+    window.addEventListener('resize', resize);
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
+  }
+
+  function wire3() {
+    scene.background = (current === 'chrome') ? cube : null;
+    renderer.setClearColor(new THREE.Color(surface()), 1);
+    if (amb) {
+      var s = current === 'shaded';
+      amb.intensity = s ? 0.1 : 0.42;
+      key.visible = !s; fill.visible = !s; head.visible = s;
+    }
+  }
+  window.__viewerTheme = function () { if (renderer) wire3(); };
+
+  function resize() {
+    if (!renderer) return;
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  function cam() {
+    // keep well clear of the poles: close to them lookAt rolls the view wildly
+    tPhi = Math.max(0.34, Math.min(Math.PI - 0.34, tPhi));
+    tRadius = Math.max(2.4, Math.min(9, tRadius));
+    theta += (tTheta - theta) * 0.16;
+    phi += (tPhi - phi) * 0.16;
+    radius += (tRadius - radius) * 0.12;
+    camera.position.set(
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.cos(theta)
+    );
+    camera.lookAt(0, 0, 0);
+  }
+
+  function loop() {
+    raf = requestAnimationFrame(loop);
+    if (!visible || !mesh) return;
+    if (autoSpin && !reduce) tTheta += 0.0032;
+    cam();
+    if (head && head.visible) head.position.copy(camera.position);
+    renderer.render(scene, camera);
+  }
+
+  function bind() {
+    var dragging = false, lx = 0, ly = 0;
+    canvas.addEventListener('pointerdown', function (e) {
+      dragging = true; autoSpin = false; lx = e.clientX; ly = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      tTheta -= (e.clientX - lx) * 0.007;
+      tPhi -= (e.clientY - ly) * 0.007;
+      lx = e.clientX; ly = e.clientY;
+    });
+    function up(e) {
+      dragging = false;
+      try { canvas.releasePointerCapture(e.pointerId); } catch (err) { /* no-op */ }
+    }
+    canvas.addEventListener('pointerup', up);
+    canvas.addEventListener('pointercancel', up);
+    canvas.addEventListener('wheel', function (e) {
+      e.preventDefault(); autoSpin = false;
+      tRadius += e.deltaY * 0.0035;
+    }, { passive: false });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.seg [data-mode]'), function (b) {
+      b.addEventListener('click', function () {
+        current = b.dataset.mode;
+        Array.prototype.forEach.call(document.querySelectorAll('.seg [data-mode]'), function (o) {
+          o.setAttribute('aria-pressed', String(o === b));
+        });
+        var relief = current === 'relief';
+        if (mesh) {
+          mesh.visible = !relief;
+          if (!relief) { mesh.material = mats[current]; mesh.material.wireframe = wire; }
+        }
+        if (plane) { plane.visible = relief; mats.relief.wireframe = wire; }
+        wire3();
+      });
+    });
+
+    var wb = document.getElementById('wireBtn');
+    if (wb) wb.addEventListener('click', function () {
+      wire = !wire;
+      wb.setAttribute('aria-pressed', String(wire));
+      if (mesh) mesh.material.wireframe = wire;
+      if (plane) mats.relief.wireframe = wire;
+    });
+  }
+})();
+
+/* ---- photo lightbox --------------------------------------------------- */
+(function () {
+  var box = document.getElementById('lightbox');
+  var img = document.getElementById('lightboxImg');
+  var cap = document.getElementById('lightboxCap');
+  var close = document.getElementById('lightboxClose');
+  if (!box || !img) return;
+  var last = null;
+
+  function open(src, alt, trigger) {
+    last = trigger || null;
+    img.src = src;
+    img.alt = alt || '';
+    cap.textContent = alt || '';
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (close) close.focus();
+  }
+  function shut() {
+    box.hidden = true;
+    img.src = '';
+    document.body.style.overflow = '';
+    if (last && last.focus) last.focus();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.shotbtn'), function (b) {
+    b.addEventListener('click', function () {
+      var i = b.querySelector('img');
+      if (i) open(i.currentSrc || i.src, i.alt, b);
+    });
+  });
+
+  if (close) close.addEventListener('click', shut);
+  box.addEventListener('click', function (e) { if (e.target !== img) shut(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !box.hidden) shut();
+  });
+})();
+
+/* ---- copy email ------------------------------------------------------- */
+(function () {
+  var btn = document.getElementById('copy'), mail = document.getElementById('email');
+  if (!btn || !mail) return;
+  btn.addEventListener('click', function () {
+    var done = function () {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+    };
+    var fallback = function () {
+      try {
+        var r = document.createRange(); r.selectNodeContents(mail);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        btn.textContent = 'Selected';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+      } catch (e) { /* no-op */ }
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mail.textContent.trim()).then(done, fallback);
+      } else { fallback(); }
+    } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
